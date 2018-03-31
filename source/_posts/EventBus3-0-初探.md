@@ -8,6 +8,8 @@ tags: Android 组件间通信
 
 > 最近项目中，有好些后台 Service，就免不了 Activity 和 Service 的通信，也就有了不少 Broadcast，写了不少重复代码，就产生了使用 EventBus 的意思，而且现在更新到了 EventBus 3.0，用法有了些许不同，不过相比之前更方便。
 
+<!-- more -->
+
 [EventBus Github](https://github.com/greenrobot/EventBus)
 
 ### EventBus 有什么用
