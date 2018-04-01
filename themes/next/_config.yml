@@ -234,8 +234,8 @@ post_meta:
 # Dependencies: https://github.com/willin/hexo-wordcount
 post_wordcount:
   item_text: true
-  wordcount: false
-  min2read: false
+  wordcount: true
+  min2read: true
   totalcount: false
   separated_meta: true
 
@@ -807,6 +807,9 @@ vendors:
   # https://github.com/revir/need-more-share2
   needMoreShare2:
 
+# Online contact 
+daovoice: true
+daovoice_app_id: 02d5e7aa
 
 # Assets
 css: css

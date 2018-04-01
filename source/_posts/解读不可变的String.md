@@ -19,7 +19,7 @@ tags: Java
 不可变对象是指一个对象的状态在对象被创建之后就不再变化。不可改变的意思就是说：不能改变对象内的成员变量，包括基本数据类型的值不能改变，引用类型的变量不能指向其他的对象，引用类型指向的对象的状态也不能改变。
 
 那么会有人说，以下的代码不就改变了String吗：
-```
+```Java
 public static void main(String[] args) {
     String s = "ABCDEF";
     System.out.println("s = " + s);
@@ -39,7 +39,7 @@ s = 123456
 > 在这里，对象引用和C语言中的指针其实很像，它们都是存放的对象在内存中的地址值，只是在java中的引用丧失了部分灵活性，比如就不能像C中的指针那样进行运算。
 
 那么又会有朋友说啦，String类中有修改自身的方法又是怎样呢，比如不是有一个replaced(替换)方法么
-```
+```java
 public static void main(String[] args) {
     String s = "ABCDEF";
     System.out.println("s = " + s);
@@ -53,7 +53,7 @@ s = ABCDEF</br>
 s = ABCDEF</br>
 
 结果是不是没有改变，是否出乎你的意料呢，现在改一下代码：
-```
+```java
 public static void main(String[] args) {
     String s = "ABCDEF";
     System.out.println("s = " + s);
@@ -70,7 +70,7 @@ s = aBCDEF</br>
 
 ### 如何实现不可变 ###
 要了解String的不可变性，首先看一下String类中都有哪些成员变量，
-```
+```java
 /** The value is used for character storage. */
 private final char value[];
 
@@ -98,7 +98,7 @@ StringBuffer和StringBuilder的一个区别是，StringBuffer在append方法前�
 
 ### 那么，真的不可变么 ###
 现在我们已经知道了String的成员变量是private final 的，也就是初始化之后不可改变的。同时也提到value这个成员变量其实也是一个引用，指向真正的数组内存地址，不能改变它的引用指向，我们能不能直接改变内存数组中的数据呢，那么就需要获取到value，而value是私有的，我们怎么获取呢？对！就是用反射。
-```
+```Java
 public static void reflectString() throws Exception{
     
     String s = "ABCDEF";
