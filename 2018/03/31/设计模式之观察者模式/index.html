@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-mac-osx.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "02d5e7aa"
+    });
+  daovoice('update');
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java 设计模式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言 事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定，特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。能够极大的降低资源占用，提高效率，而观察者模式就是对事件驱动模型的实现。">
+<meta name="keywords" content="Java 设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式之观察者模式">
+<meta property="og:url" content="http://yoursite.com/2018/03/31/设计模式之观察者模式/index.html">
+<meta property="og:site_name" content="Ysan&#39;sblog">
+<meta property="og:description" content="前言 事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定，特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。能够极大的降低资源占用，提高效率，而观察者模式就是对事件驱动模型的实现。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-01T09:12:15.957Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式之观察者模式">
+<meta name="twitter:description" content="前言 事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定，特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。能够极大的降低资源占用，提高效率，而观察者模式就是对事件驱动模型的实现。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/31/设计模式之观察者模式/"/>
+
+
+
+
+
+  <title>设计模式之观察者模式 | Ysan'sblog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	
+	<a href="https://github.com/cgzysan"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ysan'sblog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人生得意须尽欢</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/31/设计模式之观察者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Ysan">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ysan'sblog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">设计模式之观察者模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T22:06:52+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/31/设计模式之观察者模式/" class="leancloud_visitors" data-flag-title="设计模式之观察者模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,238
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定，特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。能够极大的降低资源占用，提高效率，而观察者模式就是对事件驱动模型的实现。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><blockquote>
+<p>Rxjava中就运用到了观察者模式，那什么是观察者模式呢，现在来学习一下。正所谓观察，就是看，细察事物的现象、动向。在这里看来就是监视目标的动作,然后自己作出相应的回应。</p>
+</blockquote>
+<h4 id="先写一个简单的观察者"><a href="#先写一个简单的观察者" class="headerlink" title="先写一个简单的观察者"></a>先写一个简单的观察者</h4><ul>
+<li><p>不可能只有一个观察者是吧，抽象一个观察者接口：</p>
+<pre><code>public interface ObserverInterface {
+    //观察者获取到情报要更新状态
+    public void update(String context);
+}
+</code></pre></li>
+<li><p>定义一个观察者类：</p>
+<pre><code>public class RealObserver implements ObserverInterface {
+
+    @Override
+    public void update(String context) {
+        System.out.println(&quot;观察到对方动作,开始汇报&quot;);
+        this.reportToBoss(context);
+        System.out.println(&quot;汇报完毕&quot;);
+    }
+
+    //获取到情报要汇报
+    public void reportToBoss(String context){
+        System.out.println(&quot;老板,有情况。。。目标在&quot; + context);
+    }
+}
+</code></pre></li>
+</ul>
+<h4 id="再写一个被观察者"><a href="#再写一个被观察者" class="headerlink" title="再写一个被观察者"></a>再写一个被观察者</h4><ul>
+<li><p>抽象一些被观察者的行为。</p>
+<pre><code>public interface ObservableInterface {
+    //被观察者的动作
+    public void eat();
+    public void sleep();
+}
+</code></pre></li>
+<li><p>定义一个被观察者类：</p>
+<pre><code>public class RealObservable implements ObservableInterface {
+
+    private boolean isEat = false;
+    private boolean isSleep = false;
+
+    public boolean isEat() {
+        return isEat;
+    }
+
+    public void setEat(boolean isEat) {
+        this.isEat = isEat;
+    }
+
+    public boolean isSleep() {
+        return isSleep;
+    }
+
+    public void setSleep(boolean isSleep) {
+        this.isSleep = isSleep;
+    }
+
+    @Override
+    public void eat() {
+        System.out.println(&quot;我吃饭了。。。&quot;);
+        this.isEat = true;
+    }
+
+    @Override
+    public void sleep() {
+        System.out.println(&quot;我睡觉了。。。&quot;);
+        this.isSleep = true;
+    }
+}
+</code></pre></li>
+<li>其中就是对两个布尔值的操作，同时还有get/set方法以便获取当前值并进行修改。</li>
+</ul>
+<h4 id="写一个线程类"><a href="#写一个线程类" class="headerlink" title="写一个线程类"></a>写一个线程类</h4><p>既然要观察监视，就要时刻关注被观察者的状态，以便能在其发生改变的时候及时的更新自己的状态，那么我们就开一条子线程一直在其中循环判断嘛，这不就行了么。</p>
+<pre><code>public class WatchThread extends Thread {
+    // 被观察者
+    private RealObservable mRealObservable;
+    // 观察者
+    private RealObserver mReObserver;
+    // 具体的监视事件
+    private String mType;
+
+    WatchThread(RealObservable realObservable ,RealObserver realObserver ,String type){
+        this.mRealObservable = realObservable;
+        this.mReObserver = realObserver;
+        this.mType = type;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            if (this.mType.equals(&quot;eat&quot;)) {
+                if (this.mRealObservable.isEat()){
+                    this.mReObserver.update(&quot;吃饭。。。&quot;);
+                    //重置状态,以便继续继续监视更新状态
+                    this.mRealObservable.setEat(false);
+                }
+            } else {
+                if (this.mRealObservable.isSleep()){
+                    this.mReObserver.update(&quot;睡觉了。。。&quot;);
+                    //重置状态,以便继续继续监视更新状态
+                    this.mRealObservable.setSleep(false);
+                }
+            }
+        }
+    }
+}
+</code></pre><h4 id="开启线程"><a href="#开启线程" class="headerlink" title="开启线程"></a>开启线程</h4><p>那么现在，万事俱备，只欠东风。在主线程中，创建子线程，并开启线程，获取打印结果。</p>
+<pre><code>public static void main(String[] args) throws InterruptedException {
+    //定义出观察者和被观察者
+    RealObservable realObservable = new RealObservable();
+    RealObserver realObserver= new RealObserver();
+
+    //创建监视吃饭线程，并开启
+    WatchThread eatWatch = new WatchThread(realObservable, realObserver, &quot;eat&quot;);
+    eatWatch.start();
+
+    //创建监视睡觉线程，并开启
+    WatchThread sleepWatch = new WatchThread(realObservable, realObserver, &quot;sleep&quot;);
+    sleepWatch.start();
+
+    //主线程休眠1.5s,确保子线程开启完成
+    Thread.sleep(1500);
+    //改变被观察者状态
+    realObservable.eat();
+
+    Thread.sleep(1000);
+    realObservable.sleep();
+}
+</code></pre><p>打印结果：<br><br>我吃饭了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭。。。<br><br>汇报完毕<br><br>我睡觉了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在睡觉了。。。<br><br>汇报完毕<br></p>
+<h4 id="观察者的另一层含义"><a href="#观察者的另一层含义" class="headerlink" title="观察者的另一层含义"></a>观察者的另一层含义</h4><p>那么，这样并不算完，注意到没有，我们在子线程开一个无限死循环while(true)作监听，这样的成本太高。那应该如何进行修改呢，这里换一个方向想，我们需要的是什么，我们需要的是如果被观察者的状态发生了改变，或者说触发了什么事件，我们能够及时的获得这个情报，我们也只需要这个情报，想想看过的谍战片，一直派人监视目标是不是很累，并且需要大量的资源，就像这里的while(true)死循环一样，而有的人就买通目标身边的亲信，让亲信给自己送情报，一旦目标有什么动作就通知自己，这样是不是降低了很多成本，当然买通亲信也是要成本的咯。这也就成了观察者另外一层含义，古往今来从来不缺这类人，他有一个时髦的名称：间谍<br><br>说了这么多，在代码中如何实现呢，让被观察者持有观察者的对象，在被观察者产生动作后，直接调用观察者的方法，就达到了汇报的目的了。</p>
+<h4 id="改进被观察者"><a href="#改进被观察者" class="headerlink" title="改进被观察者"></a>改进被观察者</h4><ul>
+<li><p>让被观察者持有观察者对象，并在恰当的时机调用其方法。</p>
+<pre><code>public class RealObservable implements ObservableInterface {
+    //创建观察者对象
+    private ObserverInterface mObserver = new RealObserver();
+
+    @Override
+    public void eat() {
+        System.out.println(&quot;我吃饭了。。。&quot;);
+        this.mObserver.update(&quot;吃饭了&quot;);
+    }
+
+    @Override
+    public void sleep() {
+        System.out.println(&quot;我睡觉了。。。&quot;);
+        this.mObserver.update(&quot;睡觉了&quot;);
+    }
+}
+</code></pre></li>
+</ul>
+<h4 id="修改主函数"><a href="#修改主函数" class="headerlink" title="修改主函数"></a>修改主函数</h4><pre><code>public static void main(String[] args) throws InterruptedException {
+    //创建被观察者
+    RealObservable realObservable = new RealObservable();
+    realObservable.eat();
+    realObservable.sleep();
+}
+</code></pre><p>运行打印结果：<br><br>我吃饭了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我睡觉了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在睡觉了<br><br>汇报完毕<br></p>
+<blockquote>
+<p>打印结果正确，同时效率也提高了。那么是不是这样就够了呢，想一想，我们难道只有一个观察者么，<br>被观察者的行为难道仅仅是“吃饭”，“睡觉”么，我们应该要达到想增加观察者或者删除观察者，一行代码就搞定的目的，这样的代码才方便后期的拓展和维护是吧。</p>
+</blockquote>
+<h4 id="改进被观察者接口"><a href="#改进被观察者接口" class="headerlink" title="改进被观察者接口"></a>改进被观察者接口</h4><ul>
+<li><p>我们要控制对观察者的增加和删除，也就是要求在被观察者类中进行操作，那么抽象一个接口，里面定义增加观察者和删除观察者的方法。</p>
+<pre><code>public interface ObservableInterface {
+    //添加观察者
+    public void addObserver(ObserverInterface observer);
+    //移除观察者
+    public void removeObserver(ObserverInterface observer);
+    //通知观察者
+    public void notifyObserver(String context);
+}
+</code></pre></li>
+<li><p>重新定义被观察者类：</p>
+<pre><code>public class RealObservable implements ObservableInterface {
+    private List&lt;ObserverInterface&gt; mObserverList = new ArrayList&lt;ObserverInterface&gt;();
+
+    @Override
+    public void addObserver(ObserverInterface observer) {
+        mObserverList.add(observer);
+    }
+
+    @Override
+    public void removeObserver(ObserverInterface observer) {
+        mObserverList.remove(observer);
+    }
+
+    @Override
+    public void notifyObserver(String context) {
+        for (ObserverInterface observer : mObserverList) {
+            observer.update(context);
+        }
+    }
+
+    public void eat(){
+        System.out.println(&quot;我吃饭了。。。&quot;);
+        this.notifyObserver(&quot;吃饭了&quot;);
+    }
+
+    public void sleep(){
+        System.out.println(&quot;我睡觉了。。。&quot;);
+        this.notifyObserver(&quot;睡觉了&quot;);
+    }
+}
+</code></pre></li>
+<li><p>为了让结果更直观，对观察者也作出适当的修改：</p>
+<pre><code>public class RealObserver implements ObserverInterface {
+    private String name = null;
+
+    public RealObserver(String name){
+        this.name = name;
+    }
+
+    @Override
+    public void update(String context) {
+        System.out.println(&quot;我是&quot; + name + &quot;观察到对方动作,开始汇报&quot;);
+        this.reportToBoss(context);
+        System.out.println(&quot;汇报完毕&quot;);
+    }
+
+    //获取到情报要汇报
+    public void reportToBoss(String context){
+        System.out.println(&quot;老板,有情况。。。目标在&quot; + context);
+    }
+}
+</code></pre></li>
+<li><p>运行主函数：</p>
+<pre><code>public static void main(String[] args) throws InterruptedException {
+    //创建被观察者
+    RealObservable Observable = new RealObservable();
+    //创建观察者
+    ObserverInterface zhangsan = new RealObserver(&quot;zhangsan&quot;);
+    ObserverInterface lisi = new RealObserver(&quot;lisi&quot;);
+    ObserverInterface wangwu = new RealObserver(&quot;wangwu&quot;);
+    //加入观察者集合
+    Observable.addObserver(zhangsan);
+    Observable.addObserver(lisi);
+    Observable.addObserver(wangwu);
+    //被观察者发生动作
+    Observable.eat();
+}
+</code></pre></li>
+</ul>
+<p>打印结果：<br><br>我吃饭了。。。<br><br>我是zhangsan观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我是lisi观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我是wangwu观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br></p>
+<blockquote>
+<p>现在基本上是算完成了，说了这么多，其实JDK中给我们提供了观察者和被观察者(Observer/Observable),当中的方法也和我们所说的差不多，不过看源码可以看出，JDK中的被观察者是使用线程安全的Vector保存观察者对象。</p>
+</blockquote>
+<p>附上使用代码：</p>
+<ul>
+<li><p>观察者</p>
+<p>  public class RealObserver implements Observer{</p>
+<pre><code>private String name = null;
+
+public RealObserver(String name){
+    this.name = name;
+}
+
+@Override
+public void update(Observable o, Object arg) {
+    System.out.println(&quot;我是&quot; + name + &quot;观察到对方动作,开始汇报&quot;);
+    this.reportToBoss(arg.toString());
+    System.out.println(&quot;汇报完毕&quot;);
+}
+
+//获取到情报要汇报
+public void reportToBoss(String context){
+    System.out.println(&quot;老板,有情况。。。目标在&quot; + context);
+}
+</code></pre><p>  }</p>
+</li>
+<li><p>被观察者</p>
+<pre><code>public class RealObservable extends Observable {
+    public void eat(){
+        System.out.println(&quot;我吃饭了&quot;);
+        super.setChanged();
+        super.notifyObservers(&quot;吃饭&quot;);
+    }
+
+    public void sleep(){
+        System.out.println(&quot;我睡觉了&quot;);
+        super.setChanged();
+        this.notifyObservers(&quot;睡觉&quot;);
+    }
+}
+</code></pre></li>
+<li><p>主函数</p>
+<pre><code>public class OberserDemo {
+
+    public static void main(String[] args) {
+        //创建被观察者
+        RealObservable ob = new RealObservable();
+        //创建观察者
+        Observer zhangsan = new RealObserver(&quot;zhangsan&quot;);
+        Observer lisi = new RealObserver(&quot;lisi&quot;);
+        Observer wangwu = new RealObserver(&quot;wangwu&quot;);
+        //添加进观察者集合
+        ob.addObserver(zhangsan);
+        ob.addObserver(lisi);
+        ob.addObserver(wangwu);
+        //被观察者发生动作
+        ob.eat();
+    }
+}
+</code></pre><p>  打印结果：<br><br>  我吃饭了<br><br>  我是wangwu观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br><br>  我是lisi观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br><br>  我是zhangsan观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-设计模式/" rel="tag"># Java 设计模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/31/解读不可变的String/" rel="next" title="解读不可变的String">
+                <i class="fa fa-chevron-left"></i> 解读不可变的String
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Ysan" />
+            
+              <p class="site-author-name" itemprop="name">Ysan</p>
+              <p class="site-description motion-element" itemprop="description">Stop trying to find a rewind. It's life, not a movie.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cgzysan" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.jianshu.com/u/25443d32d887" target="_blank" title="简书">
+                      
+                        <i class="fa fa-fw fa-globe"></i>简书</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:ysancgz@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#观察者模式"><span class="nav-number">1.1.</span> <span class="nav-text">观察者模式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先写一个简单的观察者"><span class="nav-number">1.1.1.</span> <span class="nav-text">先写一个简单的观察者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#再写一个被观察者"><span class="nav-number">1.1.2.</span> <span class="nav-text">再写一个被观察者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写一个线程类"><span class="nav-number">1.1.3.</span> <span class="nav-text">写一个线程类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启线程"><span class="nav-number">1.1.4.</span> <span class="nav-text">开启线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察者的另一层含义"><span class="nav-number">1.1.5.</span> <span class="nav-text">观察者的另一层含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改进被观察者"><span class="nav-number">1.1.6.</span> <span class="nav-text">改进被观察者</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改主函数"><span class="nav-number">1.1.7.</span> <span class="nav-text">修改主函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改进被观察者接口"><span class="nav-number">1.1.8.</span> <span class="nav-text">改进被观察者接口</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ysan</span>
+
+  
+</div>
+
+
+	<div class="powered-by">
+	<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+	  本站访客数:<span id="busuanzi_value_site_uv"></span>
+	</span>
+	</div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共5.0k字</span>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("dmz2G8eRGNwXG9O4FeaEppJl-gzGzoHsz", "oMVmYvcxijauY77rrEmPrvAW");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
