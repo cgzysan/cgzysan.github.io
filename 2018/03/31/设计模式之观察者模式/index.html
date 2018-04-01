@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Ysan&#39;sblog">
 <meta property="og:description" content="前言 事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定，特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。能够极大的降低资源占用，提高效率，而观察者模式就是对事件驱动模型的实现。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-01T09:12:15.957Z">
+<meta property="og:updated_time" content="2018-04-01T09:19:29.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式之观察者模式">
 <meta name="twitter:description" content="前言 事件驱动编程是一种编程范式，这里程序的执行流由外部事件来决定，特点是包含一个事件循环，当外部事件发生时使用回调机制来触发相应的处理。能够极大的降低资源占用，提高效率，而观察者模式就是对事件驱动模型的实现。">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,238
+                  2,492
                 </span>
               
 
@@ -340,7 +340,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  9
+                  11
                 </span>
               
             </div>
@@ -370,241 +370,51 @@
 </blockquote>
 <h4 id="先写一个简单的观察者"><a href="#先写一个简单的观察者" class="headerlink" title="先写一个简单的观察者"></a>先写一个简单的观察者</h4><ul>
 <li><p>不可能只有一个观察者是吧，抽象一个观察者接口：</p>
-<pre><code>public interface ObserverInterface {
-    //观察者获取到情报要更新状态
-    public void update(String context);
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ObserverInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">//观察者获取到情报要更新状态</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(String context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>定义一个观察者类：</p>
-<pre><code>public class RealObserver implements ObserverInterface {
-
-    @Override
-    public void update(String context) {
-        System.out.println(&quot;观察到对方动作,开始汇报&quot;);
-        this.reportToBoss(context);
-        System.out.println(&quot;汇报完毕&quot;);
-    }
-
-    //获取到情报要汇报
-    public void reportToBoss(String context){
-        System.out.println(&quot;老板,有情况。。。目标在&quot; + context);
-    }
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObserver</span> <span class="keyword">implements</span> <span class="title">ObserverInterface</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(String context)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"观察到对方动作,开始汇报"</span>);</span><br><span class="line">        <span class="keyword">this</span>.reportToBoss(context);</span><br><span class="line">        System.out.println(<span class="string">"汇报完毕"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取到情报要汇报</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reportToBoss</span><span class="params">(String context)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"老板,有情况。。。目标在"</span> + context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h4 id="再写一个被观察者"><a href="#再写一个被观察者" class="headerlink" title="再写一个被观察者"></a>再写一个被观察者</h4><ul>
 <li><p>抽象一些被观察者的行为。</p>
-<pre><code>public interface ObservableInterface {
-    //被观察者的动作
-    public void eat();
-    public void sleep();
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ObservableInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">//被观察者的动作</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>定义一个被观察者类：</p>
-<pre><code>public class RealObservable implements ObservableInterface {
-
-    private boolean isEat = false;
-    private boolean isSleep = false;
-
-    public boolean isEat() {
-        return isEat;
-    }
-
-    public void setEat(boolean isEat) {
-        this.isEat = isEat;
-    }
-
-    public boolean isSleep() {
-        return isSleep;
-    }
-
-    public void setSleep(boolean isSleep) {
-        this.isSleep = isSleep;
-    }
-
-    @Override
-    public void eat() {
-        System.out.println(&quot;我吃饭了。。。&quot;);
-        this.isEat = true;
-    }
-
-    @Override
-    public void sleep() {
-        System.out.println(&quot;我睡觉了。。。&quot;);
-        this.isSleep = true;
-    }
-}
-</code></pre></li>
-<li>其中就是对两个布尔值的操作，同时还有get/set方法以便获取当前值并进行修改。</li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObservable</span> <span class="keyword">implements</span> <span class="title">ObservableInterface</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isEat = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isSleep = <span class="keyword">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isEat;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEat</span><span class="params">(<span class="keyword">boolean</span> isEat)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isEat = isEat;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isSleep;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSleep</span><span class="params">(<span class="keyword">boolean</span> isSleep)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.isSleep = isSleep;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我吃饭了。。。"</span>);</span><br><span class="line">        <span class="keyword">this</span>.isEat = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我睡觉了。。。"</span>);</span><br><span class="line">        <span class="keyword">this</span>.isSleep = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>其中就是对两个布尔值的操作，同时还有get/set方法以便获取当前值并进行修改。</p>
+</li>
 </ul>
 <h4 id="写一个线程类"><a href="#写一个线程类" class="headerlink" title="写一个线程类"></a>写一个线程类</h4><p>既然要观察监视，就要时刻关注被观察者的状态，以便能在其发生改变的时候及时的更新自己的状态，那么我们就开一条子线程一直在其中循环判断嘛，这不就行了么。</p>
-<pre><code>public class WatchThread extends Thread {
-    // 被观察者
-    private RealObservable mRealObservable;
-    // 观察者
-    private RealObserver mReObserver;
-    // 具体的监视事件
-    private String mType;
-
-    WatchThread(RealObservable realObservable ,RealObserver realObserver ,String type){
-        this.mRealObservable = realObservable;
-        this.mReObserver = realObserver;
-        this.mType = type;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            if (this.mType.equals(&quot;eat&quot;)) {
-                if (this.mRealObservable.isEat()){
-                    this.mReObserver.update(&quot;吃饭。。。&quot;);
-                    //重置状态,以便继续继续监视更新状态
-                    this.mRealObservable.setEat(false);
-                }
-            } else {
-                if (this.mRealObservable.isSleep()){
-                    this.mReObserver.update(&quot;睡觉了。。。&quot;);
-                    //重置状态,以便继续继续监视更新状态
-                    this.mRealObservable.setSleep(false);
-                }
-            }
-        }
-    }
-}
-</code></pre><h4 id="开启线程"><a href="#开启线程" class="headerlink" title="开启线程"></a>开启线程</h4><p>那么现在，万事俱备，只欠东风。在主线程中，创建子线程，并开启线程，获取打印结果。</p>
-<pre><code>public static void main(String[] args) throws InterruptedException {
-    //定义出观察者和被观察者
-    RealObservable realObservable = new RealObservable();
-    RealObserver realObserver= new RealObserver();
-
-    //创建监视吃饭线程，并开启
-    WatchThread eatWatch = new WatchThread(realObservable, realObserver, &quot;eat&quot;);
-    eatWatch.start();
-
-    //创建监视睡觉线程，并开启
-    WatchThread sleepWatch = new WatchThread(realObservable, realObserver, &quot;sleep&quot;);
-    sleepWatch.start();
-
-    //主线程休眠1.5s,确保子线程开启完成
-    Thread.sleep(1500);
-    //改变被观察者状态
-    realObservable.eat();
-
-    Thread.sleep(1000);
-    realObservable.sleep();
-}
-</code></pre><p>打印结果：<br><br>我吃饭了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭。。。<br><br>汇报完毕<br><br>我睡觉了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在睡觉了。。。<br><br>汇报完毕<br></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WatchThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 被观察者</span></span><br><span class="line">    <span class="keyword">private</span> RealObservable mRealObservable;</span><br><span class="line">    <span class="comment">// 观察者</span></span><br><span class="line">    <span class="keyword">private</span> RealObserver mReObserver;</span><br><span class="line">    <span class="comment">// 具体的监视事件</span></span><br><span class="line">    <span class="keyword">private</span> String mType;</span><br><span class="line">    </span><br><span class="line">    WatchThread(RealObservable realObservable ,RealObserver realObserver ,String type)&#123;</span><br><span class="line">        <span class="keyword">this</span>.mRealObservable = realObservable;</span><br><span class="line">        <span class="keyword">this</span>.mReObserver = realObserver;</span><br><span class="line">        <span class="keyword">this</span>.mType = type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.mType.equals(<span class="string">"eat"</span>)) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.mRealObservable.isEat())&#123;</span><br><span class="line">                    <span class="keyword">this</span>.mReObserver.update(<span class="string">"吃饭。。。"</span>);</span><br><span class="line">                    <span class="comment">//重置状态,以便继续继续监视更新状态</span></span><br><span class="line">                    <span class="keyword">this</span>.mRealObservable.setEat(<span class="keyword">false</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.mRealObservable.isSleep())&#123;</span><br><span class="line">                    <span class="keyword">this</span>.mReObserver.update(<span class="string">"睡觉了。。。"</span>);</span><br><span class="line">                    <span class="comment">//重置状态,以便继续继续监视更新状态</span></span><br><span class="line">                    <span class="keyword">this</span>.mRealObservable.setSleep(<span class="keyword">false</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="开启线程"><a href="#开启线程" class="headerlink" title="开启线程"></a>开启线程</h4><p>那么现在，万事俱备，只欠东风。在主线程中，创建子线程，并开启线程，获取打印结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="comment">//定义出观察者和被观察者</span></span><br><span class="line">    RealObservable realObservable = <span class="keyword">new</span> RealObservable();</span><br><span class="line">    RealObserver realObserver= <span class="keyword">new</span> RealObserver();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建监视吃饭线程，并开启</span></span><br><span class="line">    WatchThread eatWatch = <span class="keyword">new</span> WatchThread(realObservable, realObserver, <span class="string">"eat"</span>);</span><br><span class="line">    eatWatch.start();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建监视睡觉线程，并开启</span></span><br><span class="line">    WatchThread sleepWatch = <span class="keyword">new</span> WatchThread(realObservable, realObserver, <span class="string">"sleep"</span>);</span><br><span class="line">    sleepWatch.start();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//主线程休眠1.5s,确保子线程开启完成</span></span><br><span class="line">    Thread.sleep(<span class="number">1500</span>);</span><br><span class="line">    <span class="comment">//改变被观察者状态</span></span><br><span class="line">    realObservable.eat();</span><br><span class="line">    </span><br><span class="line">    Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">    realObservable.sleep();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果：<br><br>我吃饭了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭。。。<br><br>汇报完毕<br><br>我睡觉了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在睡觉了。。。<br><br>汇报完毕<br></p>
 <h4 id="观察者的另一层含义"><a href="#观察者的另一层含义" class="headerlink" title="观察者的另一层含义"></a>观察者的另一层含义</h4><p>那么，这样并不算完，注意到没有，我们在子线程开一个无限死循环while(true)作监听，这样的成本太高。那应该如何进行修改呢，这里换一个方向想，我们需要的是什么，我们需要的是如果被观察者的状态发生了改变，或者说触发了什么事件，我们能够及时的获得这个情报，我们也只需要这个情报，想想看过的谍战片，一直派人监视目标是不是很累，并且需要大量的资源，就像这里的while(true)死循环一样，而有的人就买通目标身边的亲信，让亲信给自己送情报，一旦目标有什么动作就通知自己，这样是不是降低了很多成本，当然买通亲信也是要成本的咯。这也就成了观察者另外一层含义，古往今来从来不缺这类人，他有一个时髦的名称：间谍<br><br>说了这么多，在代码中如何实现呢，让被观察者持有观察者的对象，在被观察者产生动作后，直接调用观察者的方法，就达到了汇报的目的了。</p>
 <h4 id="改进被观察者"><a href="#改进被观察者" class="headerlink" title="改进被观察者"></a>改进被观察者</h4><ul>
 <li><p>让被观察者持有观察者对象，并在恰当的时机调用其方法。</p>
-<pre><code>public class RealObservable implements ObservableInterface {
-    //创建观察者对象
-    private ObserverInterface mObserver = new RealObserver();
-
-    @Override
-    public void eat() {
-        System.out.println(&quot;我吃饭了。。。&quot;);
-        this.mObserver.update(&quot;吃饭了&quot;);
-    }
-
-    @Override
-    public void sleep() {
-        System.out.println(&quot;我睡觉了。。。&quot;);
-        this.mObserver.update(&quot;睡觉了&quot;);
-    }
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObservable</span> <span class="keyword">implements</span> <span class="title">ObservableInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">//创建观察者对象</span></span><br><span class="line">    <span class="keyword">private</span> ObserverInterface mObserver = <span class="keyword">new</span> RealObserver();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我吃饭了。。。"</span>);</span><br><span class="line">        <span class="keyword">this</span>.mObserver.update(<span class="string">"吃饭了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我睡觉了。。。"</span>);</span><br><span class="line">        <span class="keyword">this</span>.mObserver.update(<span class="string">"睡觉了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h4 id="修改主函数"><a href="#修改主函数" class="headerlink" title="修改主函数"></a>修改主函数</h4><pre><code>public static void main(String[] args) throws InterruptedException {
-    //创建被观察者
-    RealObservable realObservable = new RealObservable();
-    realObservable.eat();
-    realObservable.sleep();
-}
-</code></pre><p>运行打印结果：<br><br>我吃饭了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我睡觉了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在睡觉了<br><br>汇报完毕<br></p>
+<h4 id="修改主函数"><a href="#修改主函数" class="headerlink" title="修改主函数"></a>修改主函数</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="comment">//创建被观察者</span></span><br><span class="line">    RealObservable realObservable = <span class="keyword">new</span> RealObservable();</span><br><span class="line">    realObservable.eat();</span><br><span class="line">    realObservable.sleep();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行打印结果：<br><br>我吃饭了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我睡觉了。。。<br><br>观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在睡觉了<br><br>汇报完毕<br></p>
 <blockquote>
 <p>打印结果正确，同时效率也提高了。那么是不是这样就够了呢，想一想，我们难道只有一个观察者么，<br>被观察者的行为难道仅仅是“吃饭”，“睡觉”么，我们应该要达到想增加观察者或者删除观察者，一行代码就搞定的目的，这样的代码才方便后期的拓展和维护是吧。</p>
 </blockquote>
 <h4 id="改进被观察者接口"><a href="#改进被观察者接口" class="headerlink" title="改进被观察者接口"></a>改进被观察者接口</h4><ul>
 <li><p>我们要控制对观察者的增加和删除，也就是要求在被观察者类中进行操作，那么抽象一个接口，里面定义增加观察者和删除观察者的方法。</p>
-<pre><code>public interface ObservableInterface {
-    //添加观察者
-    public void addObserver(ObserverInterface observer);
-    //移除观察者
-    public void removeObserver(ObserverInterface observer);
-    //通知观察者
-    public void notifyObserver(String context);
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ObservableInterface</span> </span>&#123;</span><br><span class="line">    <span class="comment">//添加观察者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(ObserverInterface observer)</span></span>;</span><br><span class="line">    <span class="comment">//移除观察者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(ObserverInterface observer)</span></span>;</span><br><span class="line">    <span class="comment">//通知观察者</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">(String context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>重新定义被观察者类：</p>
-<pre><code>public class RealObservable implements ObservableInterface {
-    private List&lt;ObserverInterface&gt; mObserverList = new ArrayList&lt;ObserverInterface&gt;();
-
-    @Override
-    public void addObserver(ObserverInterface observer) {
-        mObserverList.add(observer);
-    }
-
-    @Override
-    public void removeObserver(ObserverInterface observer) {
-        mObserverList.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver(String context) {
-        for (ObserverInterface observer : mObserverList) {
-            observer.update(context);
-        }
-    }
-
-    public void eat(){
-        System.out.println(&quot;我吃饭了。。。&quot;);
-        this.notifyObserver(&quot;吃饭了&quot;);
-    }
-
-    public void sleep(){
-        System.out.println(&quot;我睡觉了。。。&quot;);
-        this.notifyObserver(&quot;睡觉了&quot;);
-    }
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObservable</span> <span class="keyword">implements</span> <span class="title">ObservableInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;ObserverInterface&gt; mObserverList = <span class="keyword">new</span> ArrayList&lt;ObserverInterface&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(ObserverInterface observer)</span> </span>&#123;</span><br><span class="line">        mObserverList.add(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeObserver</span><span class="params">(ObserverInterface observer)</span> </span>&#123;</span><br><span class="line">        mObserverList.remove(observer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">(String context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (ObserverInterface observer : mObserverList) &#123;</span><br><span class="line">            observer.update(context);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我吃饭了。。。"</span>);</span><br><span class="line">        <span class="keyword">this</span>.notifyObserver(<span class="string">"吃饭了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我睡觉了。。。"</span>);</span><br><span class="line">        <span class="keyword">this</span>.notifyObserver(<span class="string">"睡觉了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>为了让结果更直观，对观察者也作出适当的修改：</p>
-<pre><code>public class RealObserver implements ObserverInterface {
-    private String name = null;
-
-    public RealObserver(String name){
-        this.name = name;
-    }
-
-    @Override
-    public void update(String context) {
-        System.out.println(&quot;我是&quot; + name + &quot;观察到对方动作,开始汇报&quot;);
-        this.reportToBoss(context);
-        System.out.println(&quot;汇报完毕&quot;);
-    }
-
-    //获取到情报要汇报
-    public void reportToBoss(String context){
-        System.out.println(&quot;老板,有情况。。。目标在&quot; + context);
-    }
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObserver</span> <span class="keyword">implements</span> <span class="title">ObserverInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name = <span class="keyword">null</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RealObserver</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(String context)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我是"</span> + name + <span class="string">"观察到对方动作,开始汇报"</span>);</span><br><span class="line">        <span class="keyword">this</span>.reportToBoss(context);</span><br><span class="line">        System.out.println(<span class="string">"汇报完毕"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取到情报要汇报</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reportToBoss</span><span class="params">(String context)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"老板,有情况。。。目标在"</span> + context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>运行主函数：</p>
-<pre><code>public static void main(String[] args) throws InterruptedException {
-    //创建被观察者
-    RealObservable Observable = new RealObservable();
-    //创建观察者
-    ObserverInterface zhangsan = new RealObserver(&quot;zhangsan&quot;);
-    ObserverInterface lisi = new RealObserver(&quot;lisi&quot;);
-    ObserverInterface wangwu = new RealObserver(&quot;wangwu&quot;);
-    //加入观察者集合
-    Observable.addObserver(zhangsan);
-    Observable.addObserver(lisi);
-    Observable.addObserver(wangwu);
-    //被观察者发生动作
-    Observable.eat();
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="comment">//创建被观察者</span></span><br><span class="line">    RealObservable Observable = <span class="keyword">new</span> RealObservable();</span><br><span class="line">    <span class="comment">//创建观察者</span></span><br><span class="line">    ObserverInterface zhangsan = <span class="keyword">new</span> RealObserver(<span class="string">"zhangsan"</span>);</span><br><span class="line">    ObserverInterface lisi = <span class="keyword">new</span> RealObserver(<span class="string">"lisi"</span>);</span><br><span class="line">    ObserverInterface wangwu = <span class="keyword">new</span> RealObserver(<span class="string">"wangwu"</span>);</span><br><span class="line">    <span class="comment">//加入观察者集合</span></span><br><span class="line">    Observable.addObserver(zhangsan);</span><br><span class="line">    Observable.addObserver(lisi);</span><br><span class="line">    Observable.addObserver(wangwu);</span><br><span class="line">    <span class="comment">//被观察者发生动作</span></span><br><span class="line">    Observable.eat();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>打印结果：<br><br>我吃饭了。。。<br><br>我是zhangsan观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我是lisi观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br><br>我是wangwu观察到对方动作,开始汇报<br><br>老板,有情况。。。目标在吃饭了<br><br>汇报完毕<br></p>
 <blockquote>
@@ -613,60 +423,15 @@
 <p>附上使用代码：</p>
 <ul>
 <li><p>观察者</p>
-<p>  public class RealObserver implements Observer{</p>
-<pre><code>private String name = null;
-
-public RealObserver(String name){
-    this.name = name;
-}
-
-@Override
-public void update(Observable o, Object arg) {
-    System.out.println(&quot;我是&quot; + name + &quot;观察到对方动作,开始汇报&quot;);
-    this.reportToBoss(arg.toString());
-    System.out.println(&quot;汇报完毕&quot;);
-}
-
-//获取到情报要汇报
-public void reportToBoss(String context){
-    System.out.println(&quot;老板,有情况。。。目标在&quot; + context);
-}
-</code></pre><p>  }</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObserver</span> <span class="keyword">implements</span> <span class="title">Observer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RealObserver</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Observable o, Object arg)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我是"</span> + name + <span class="string">"观察到对方动作,开始汇报"</span>);</span><br><span class="line">        <span class="keyword">this</span>.reportToBoss(arg.toString());</span><br><span class="line">        System.out.println(<span class="string">"汇报完毕"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//获取到情报要汇报</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reportToBoss</span><span class="params">(String context)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"老板,有情况。。。目标在"</span> + context);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  ​</p>
 </li>
 <li><p>被观察者</p>
-<pre><code>public class RealObservable extends Observable {
-    public void eat(){
-        System.out.println(&quot;我吃饭了&quot;);
-        super.setChanged();
-        super.notifyObservers(&quot;吃饭&quot;);
-    }
-
-    public void sleep(){
-        System.out.println(&quot;我睡觉了&quot;);
-        super.setChanged();
-        this.notifyObservers(&quot;睡觉&quot;);
-    }
-}
-</code></pre></li>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RealObservable</span> <span class="keyword">extends</span> <span class="title">Observable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我吃饭了"</span>);</span><br><span class="line">        <span class="keyword">super</span>.setChanged();</span><br><span class="line">        <span class="keyword">super</span>.notifyObservers(<span class="string">"吃饭"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"我睡觉了"</span>);</span><br><span class="line">        <span class="keyword">super</span>.setChanged();</span><br><span class="line">        <span class="keyword">this</span>.notifyObservers(<span class="string">"睡觉"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>主函数</p>
-<pre><code>public class OberserDemo {
-
-    public static void main(String[] args) {
-        //创建被观察者
-        RealObservable ob = new RealObservable();
-        //创建观察者
-        Observer zhangsan = new RealObserver(&quot;zhangsan&quot;);
-        Observer lisi = new RealObserver(&quot;lisi&quot;);
-        Observer wangwu = new RealObserver(&quot;wangwu&quot;);
-        //添加进观察者集合
-        ob.addObserver(zhangsan);
-        ob.addObserver(lisi);
-        ob.addObserver(wangwu);
-        //被观察者发生动作
-        ob.eat();
-    }
-}
-</code></pre><p>  打印结果：<br><br>  我吃饭了<br><br>  我是wangwu观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br><br>  我是lisi观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br><br>  我是zhangsan观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br></p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OberserDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//创建被观察者</span></span><br><span class="line">        RealObservable ob = <span class="keyword">new</span> RealObservable();</span><br><span class="line">        <span class="comment">//创建观察者</span></span><br><span class="line">        Observer zhangsan = <span class="keyword">new</span> RealObserver(<span class="string">"zhangsan"</span>);</span><br><span class="line">        Observer lisi = <span class="keyword">new</span> RealObserver(<span class="string">"lisi"</span>);</span><br><span class="line">        Observer wangwu = <span class="keyword">new</span> RealObserver(<span class="string">"wangwu"</span>);</span><br><span class="line">        <span class="comment">//添加进观察者集合</span></span><br><span class="line">        ob.addObserver(zhangsan);</span><br><span class="line">        ob.addObserver(lisi);</span><br><span class="line">        ob.addObserver(wangwu);</span><br><span class="line">        <span class="comment">//被观察者发生动作</span></span><br><span class="line">        ob.eat();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  打印结果：<br><br>  我吃饭了<br><br>  我是wangwu观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br><br>  我是lisi观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br><br>  我是zhangsan观察到对方动作,开始汇报<br><br>  老板,有情况。。。目标在吃饭<br><br>  汇报完毕<br></p>
 </li>
 </ul>
 
@@ -907,7 +672,7 @@ public void reportToBoss(String context){
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共5.0k字</span>
+  <span class="post-count">博客全站共5.2k字</span>
 </div>
 
         
