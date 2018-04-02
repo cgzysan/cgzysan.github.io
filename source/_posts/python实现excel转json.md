@@ -1,7 +1,7 @@
 ---
 title: python实现excel转json
-date: 2018-04-02 17:02:09
-tags:Python excel转json
+date: 2018-04-02 23:35:56
+tags: python excel转json
 ---
 
 ### 前言
@@ -12,10 +12,10 @@ tags:Python excel转json
 
 #### 工作环境
 
-* python 3.6
-* python 对 Excel 的操作，需要依赖 xlrd, xlwt 这两个模块，xlrd 是读 Excel 的模块，xlwt 是写 Excel 的模块 
-* pip install xlrd
-* pip install xlwt
+- python 3.6
+- python 对 Excel 的操作，需要依赖 xlrd, xlwt 这两个模块，xlrd 是读 Excel 的模块，xlwt 是写 Excel 的模块 
+- pip install xlrd
+- pip install xlwt
 
 拿到 Excel 表仔细扫了一眼，我发现表格中有一列数据基本就没有，但是这一列又是比较重要的一项，内容被包含在了另一列的数据中，所以我决定先将 Excel 表重新用 python 写一遍，所以将 xlwt 包也加了进来，如果只是读 Excel 文件，只需要 xlrd 就够了。
 

@@ -808,8 +808,8 @@ vendors:
   needMoreShare2:
 
 # Online contact 
-daovoice: true
-daovoice_app_id: 02d5e7aa
+#daovoice: true
+#daovoice_app_id: 02d5e7aa
 
 # Assets
 css: css
